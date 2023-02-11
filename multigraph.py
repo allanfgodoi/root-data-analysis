@@ -1,12 +1,3 @@
-'''
-THIS CODE MAKES MULTIPLE GRAPHS AND PLOTS IT USING THE "SAME" PARAMETER.
-
-REQUIRES CERN ROOT INSTALLED IN YOUR PC.
-
-PLEASE LOOK TO README (SOON) FOR MORE INFO.
-'''
-
-from __future__ import print_function
 from ROOT import *
 from array import array
 
@@ -17,6 +8,9 @@ filename = "multigraph.pdf" # FILE NAME AND FORMAT FOR THE CANVAS PRINT
 
 c1 = TCanvas()
 c1.SetGrid()
+
+mg = TMultiGraph()
+mg.SetTitle("Frequency x 1/Wavelength in Different Nodes")
 
 list_pos1 = [9, 6.5, 4.5, 4]
 list_pos2 = [30, 24, 19, 16]
@@ -83,31 +77,22 @@ gr5.SetMarkerColor(kBlack)
 gr5.SetMarkerSize(0.8)
 gr5.Fit("fit5")
 
-gr1.Draw("AP")
-fit1.Draw("same l")
-gr2.Draw("P same")
-fit2.Draw("same l")
-gr3.Draw("P same")
-fit3.Draw("same l")
-gr4.Draw("P same")
-fit4.Draw("same l")
-gr5.Draw("P same")
-fit5.Draw("same l")
+mg.Add(gr1)
+mg.Add(gr2)
+mg.Add(gr3)
+mg.Add(gr4)
+mg.Add(gr5)
+mg.Draw("AP")
+mg.GetXaxis().SetTitle("Frequency (Hz)")
+mg.GetYaxis().SetTitle("1/Wavelength (m^{-1})")
 
 legend = TLegend(0.1,0.67,0.3,0.9)
 legend.SetHeader("Legend", "C")
-legend.AddEntry("fit1", "First node", "l")
-legend.AddEntry("fit2", "Second node", "l")
-legend.AddEntry("fit3", "Third node", "l")
-legend.AddEntry("fit4", "Fourth node", "l")
-legend.AddEntry("fit5", "Fifth node", "l")
+legend.AddEntry(fit1, "First node", "l")
+legend.AddEntry(fit2, "Second node", "l")
+legend.AddEntry(fit3, "Third node", "l")
+legend.AddEntry(fit4, "Fourth node", "l")
+legend.AddEntry(fit5, "Fifth node", "l")
 legend.Draw()
-
-gr1.GetXaxis().SetLimits(750, 1450)
-gr1.SetMinimum(0)
-gr1.SetMaximum(6.5)
-gr1.SetTitle("Frequency x 1/Wavelength in Different Nodes")
-gr1.GetXaxis().SetTitle("Frequency (Hz)")
-gr1.GetYaxis().SetTitle("1/Wavelength (m^{-1})")
 
 c1.Print(filename)
